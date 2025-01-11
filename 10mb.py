@@ -8,9 +8,9 @@ from support import *
 
 from plugins.video import video
 from plugins.image import image
-#from plugins.audio import audio
+from plugins.audio import audio
 
-plugins = [video(), image()]
+plugins = [video(), image(), audio()]
 
 
 # set up the argument parser

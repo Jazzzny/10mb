@@ -54,7 +54,6 @@ class video:
             os.remove(input_file)
 
 
-        print(temp_file)
         input_file = temp_file
 
         # cd to tempdir so we don't litter
@@ -70,7 +69,7 @@ class video:
         print(f"video: duration is {duration_s}s")
 
         # calculate the bitrate - target in kilobits per second / duration in seconds
-        bitrate = round(((target_size * 8192 / duration_s)), 2)
+        bitrate = round(((target_size * 8000 / duration_s)), 2)
         print(f"video: bitrate will be {bitrate}k")
 
         if self.can_use_progress:
