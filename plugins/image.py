@@ -1,7 +1,6 @@
 # 10mb image plugin
 
 import os
-import sys
 from support import *
 
 class image:
@@ -22,6 +21,8 @@ class image:
         if not check_command_exists("pngquant"):
             print("warn: pngquant not found. you can install it with your favourite package manager. pngs will not be transparent.")
             self.can_use_pngquant = False
+        else:
+            print(f"image: pngquant found at {get_command_path('pngquant')}")
 
         print(f"image: imagemagick found at {get_command_path('convert')}")
         return True
