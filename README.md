@@ -1,6 +1,6 @@
 # 10mb: file compressor
 
-A simple multi-use file compressor written in Python that can compress files to a specified size, designed to make files easily uploadable to Discord.
+A super simple multi-use file compressor written in Python that can compress files to a specified size, designed to make files easily uploadable to Discord.
 
 ## Supported File Types
 - Image Files
