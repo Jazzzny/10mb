@@ -5,6 +5,8 @@ import sys
 from support import *
 
 class image:
+    def __init__(self):
+        self.can_use_pngquant = True
 
     @staticmethod
     def can_handle(file_path):
@@ -17,6 +19,10 @@ class image:
             print("error: imagemagick not found. you can install it with your favourite package manager.")
             return False
 
+        if not check_command_exists("pngquant"):
+            print("warn: pngquant not found. you can install it with your favourite package manager. pngs will not be transparent.")
+            self.can_use_pngquant = False
+
         print(f"image: imagemagick found at {get_command_path('convert')}")
         return True
 
@@ -25,12 +31,10 @@ class image:
 
         if output_file is None:
             output_file = input_file + f".{target_size}mb.{'jpg' if not is_png else 'png'}"
-        else:
-            output_file = escape_filename(output_file)
 
-        temp_output_file = create_temp_file(".")
+        output_file = escape_filename(output_file)
 
-        # ffmpeg really doesn't like spaces in filenames. copy the file to a temporary location
+
         temp_file = make_temp_copy(input_file, "image")
 
         if overwrite:
@@ -39,17 +43,27 @@ class image:
             os.remove(input_file)
 
 
-        print(temp_file)
         input_file = temp_file
 
         # cd to tempdir so we don't litter
         cd_to_temp_dir()
 
         # if png, we want to use special logic
-        if "png" in get_file_type(input_file).mime:
-            self.run_png_conversion(input_file, target_size, output_file, overwrite)
+        if "png" in get_file_type(input_file).mime and self.can_use_pngquant:
+            self.run_png_conversion(input_file, target_size, output_file)
         else:
-            run_command(f"convert {input_file} -define jpeg:extent={target_size}mb {output_file}")
+            print(f"converting {input_file} to {output_file}, target size {target_size*1024}kb")
+            self.run_imagemagick_conversion(input_file, target_size, output_file)
 
+    def run_png_conversion(self, input_file, target_size, output_file):
+        # we want to use pngquant for pngs
+        run_command(f"pngquant --quality=0-100 --speed 1 --force --output {output_file} {input_file}")
 
-    def run_png_conversion(self, input_file, target_size, output_file, overwrite):
+        # we want to check if the file is smaller than the target size
+        if get_file_size_kb(output_file) > target_size * 1024:
+            print("warn: png is still too large! will use imagemagick to compress further (loses transparency)")
+            self.run_imagemagick_conversion(input_file, target_size, output_file)
+
+    def run_imagemagick_conversion(self, input_file, target_size, output_file):
+        run_command(f"convert {input_file} -define jpeg:extent={target_size*1024}kb {output_file}")
+

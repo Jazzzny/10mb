@@ -33,7 +33,6 @@ def make_temp_copy(file_path, file_name):
     tempdir = tempfile.gettempdir()
     temp_file = os.path.join(tempdir, file_name + file_extension)
 
-    print(f"copying {file_path} to {temp_file}")
     shutil.copy(file_path, temp_file)
     # return the path.
     return temp_file
