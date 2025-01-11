@@ -53,7 +53,6 @@ class image:
         if "png" in get_file_type(input_file).mime and self.can_use_pngquant:
             self.run_png_conversion(input_file, target_size, output_file)
         else:
-            print(f"converting {input_file} to {output_file}, target size {target_size*1024}kb")
             self.run_imagemagick_conversion(input_file, target_size, output_file)
 
     def run_png_conversion(self, input_file, target_size, output_file):
