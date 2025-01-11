@@ -3,7 +3,9 @@
 A super simple multi-use file compressor written in Python that can compress files to a specified size, in a format supported by Discord, designed to make files easily uploadable to Discord.
 
 ## Design
-Built with an extendable plugin system, 10mb can easily be adapted to support more file types and formats. The plugin system is designed to be easy to use, with a simple class-based system that allows for easy development. All built-in file types are supported through plugins.
+Built with an extendable plugin system, 10mb can easily be adapted to support more file types and formats.
+
+The plugin system is designed to be easy to use, with a simple class-based architecture. All built-in file types are supported through plugins.
 
 ## Supported File Types
 - Image Files
