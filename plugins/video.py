@@ -84,7 +84,6 @@ class video:
             self.compress_video_dual_pass_fallback(input_file, bitrate, temp_output_file)
 
         # if we're overwriting the original file, move the temp file back
-        print(temp_output_file, output_file)
         os.rename(temp_output_file, unescape_filename(output_file))
 
 
