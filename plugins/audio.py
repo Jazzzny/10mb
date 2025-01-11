@@ -37,11 +37,18 @@ class audio:
 
     def compress(self, input_file, target_size, output_file, overwrite):
 
+        # if the full path is not provided, assume the file is in the current directory
+        if "/" not in input_file:
+            # full path of current directory
+            input_folder = os.getcwd() + "/"
+        else:
+            input_folder = ""
+
 
         if output_file is None:
-            output_file = input_file + f".{target_size}mb.mp3"
+            output_file = input_folder + input_file + f".{target_size}mb.mp3"
         else:
-            output_file = escape_filename(output_file)
+            output_file = input_folder + escape_filename(output_file)
 
         temp_output_file = create_temp_file(".mp3")
 

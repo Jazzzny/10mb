@@ -28,10 +28,18 @@ class image:
         return True
 
     def compress(self, input_file, target_size, output_file, overwrite):
+
+        # if the full path is not provided, assume the file is in the current directory
+        if "/" not in input_file:
+            # full path of current directory
+            input_folder = os.getcwd() + "/"
+        else:
+            input_folder = ""
+
         is_png = "png" in get_file_type(input_file).mime
 
         if output_file is None:
-            output_file = input_file + f".{target_size}mb.{'jpg' if not is_png else 'png'}"
+            output_file = input_folder + input_file + f".{target_size}mb.{'jpg' if not is_png else 'png'}"
 
         output_file = escape_filename(output_file)
 

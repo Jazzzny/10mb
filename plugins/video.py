@@ -37,11 +37,17 @@ class video:
 
     def compress(self, input_file, target_size, output_file, overwrite):
 
+        # if the full path is not provided, assume the file is in the current directory
+        if "/" not in input_file:
+            # full path of current directory
+            input_folder = os.getcwd() + "/"
+        else:
+            input_folder = ""
 
         if output_file is None:
-            output_file = input_file + f".{target_size}mb.mp4"
+            output_file = input_folder + input_file + f".{target_size}mb.mp4"
         else:
-            output_file = escape_filename(output_file)
+            output_file = input_folder + escape_filename(output_file)
 
         temp_output_file = create_temp_file(".mp4")
 
@@ -69,7 +75,7 @@ class video:
         print(f"video: duration is {duration_s}s")
 
         # calculate the bitrate - target in kilobits per second / duration in seconds
-        bitrate = round(((target_size * 8000 / duration_s)), 2)
+        bitrate = round(((target_size * 7800 / duration_s)), 2)
         print(f"video: bitrate will be {bitrate}k")
 
         if self.can_use_progress:
@@ -78,7 +84,9 @@ class video:
             self.compress_video_dual_pass_fallback(input_file, bitrate, temp_output_file)
 
         # if we're overwriting the original file, move the temp file back
+        print(temp_output_file, output_file)
         os.rename(temp_output_file, unescape_filename(output_file))
+
 
         # cleanup
         cleanup_temp_file(input_file)
